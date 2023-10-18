@@ -1,0 +1,98 @@
+<body>
+    <svg id="svg-container" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg" class="viewboxcontainer" width="1000px" height="1000px">
+        <text x="0" y="0" fill="black" font-size="12">Infant deaths in Turkey, 2009-2022</text>
+
+    </svg>
+
+    <script>
+        var jsonData = [
+            {"year": 2009, "deathnum": 17607},
+            {"year": 2010, "deathnum": 15164},
+            {"year": 2011, "deathnum": 14567},
+            {"year": 2012, "deathnum": 14974},
+            {"year": 2013, "deathnum": 14027},
+            {"year": 2014, "deathnum": 14951},
+            {"year": 2015, "deathnum": 13677},
+            {"year": 2016, "deathnum": 12910},
+            {"year": 2017, "deathnum": 12134},
+            {"year": 2018, "deathnum": 11718},
+            {"year": 2019, "deathnum": 11022},
+            {"year": 2020, "deathnum": 9757},
+            {"year": 2021, "deathnum": 10089},
+            {"year": 2022, "deathnum": 9522},
+        ];
+
+        var barchart = document.getElementById('svg-container');
+        
+        var rectWidth = 20;
+        var gap = 10;
+        var lineoffset = 50;
+        yOffset = 30;
+
+        
+        var numCols = jsonData.length;
+        var numRows = 1;
+
+        var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", 0);
+        line.setAttribute("y1", 0 + yOffset);
+        line.setAttribute("x2", 0);
+        line.setAttribute("y2", 200 + yOffset);
+        line.setAttribute("stroke", "black");
+        barchart.appendChild(line);
+
+
+        
+        for (var i = 0; i < 11; i++) {
+            var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", 0);
+            line.setAttribute("y1", 200 - i * 20 + yOffset);
+            line.setAttribute("x2", 5);
+            line.setAttribute("y2", 200 - i * 20 + yOffset);
+            line.setAttribute("stroke", "black");
+            barchart.appendChild(line);
+
+            var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            text.setAttribute("x", 10);
+            text.setAttribute("y", 200 - i * 20 + yOffset);
+            text.setAttribute("fill", "black");
+            text.setAttribute("font-size", "12");
+            text.textContent = i * 2000;
+            barchart.appendChild(text);
+        }
+
+        
+        for (var i = 0; i < numRows; i++) {
+            for (var j = 0; j < numCols; j++) {
+                var rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                
+                rect.setAttribute("x", j * (rectWidth + gap) + lineoffset);
+                rect.setAttribute("y", 200 - jsonData[j].deathnum / 100 + yOffset);
+                rect.setAttribute("width", rectWidth);
+                rect.setAttribute("height", jsonData[j].deathnum / 100);
+                rect.setAttribute("fill", "lightblue");
+                barchart.appendChild(rect);
+
+                var yearText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                yearText.setAttribute("x", j * (rectWidth + gap) + lineoffset);
+                yearText.setAttribute("y", 200 + 20 + yOffset);
+                yearText.setAttribute("fill", "black");
+                yearText.setAttribute("font-size", "12");
+                yearText.textContent = jsonData[j].year;
+                barchart.appendChild(yearText);
+
+                //rotate death text 90 degrees so its vertical
+                var deathText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                deathText.setAttribute("style", "writing-mode: tb;");
+                deathText.setAttribute("x", j * (rectWidth + gap) + 10 + lineoffset);
+                deathText.setAttribute("y", 200 - jsonData[j].deathnum / 100 + yOffset);
+                deathText.setAttribute("fill", "black");
+                deathText.setAttribute("font-size", "12");
+                deathText.textContent = jsonData[j].deathnum;
+                barchart.appendChild(deathText);
+
+
+            }
+        }
+    </script>
+</body>
